@@ -54,7 +54,7 @@ const CargarExcelYMostrarTabla = () => {
     <div>
       <h2>Listado de Eventos</h2>
       {/* Pasamos los datos al componente TablaConFiltro */}
-      <TablaConFiltro datos={datosExcel} />
+      {datosExcel.length > 0 && <TablaConFiltro datos={datosExcel} />}
     </div>
   );
 };

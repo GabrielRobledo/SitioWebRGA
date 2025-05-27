@@ -1,4 +1,5 @@
 import  { useEffect, useMemo, useState } from "react";
+import { utils, writeFile } from "xlsx";
 import '../styles/tabla.css'
 import {
   useReactTable,
@@ -10,7 +11,7 @@ import {
 const TablaConFiltro = ({ datos }) => {
   const [columnFilters, setColumnFilters] = useState([]);
   const [pageIndex, setPageIndex] = useState(0); // Estado para la página
-  const pageSize = 50; // Número de filas por página
+  const pageSize = 35; // Número de filas por página
 
   // Definición de las columnas
   const columns = useMemo(() => {
@@ -52,8 +53,28 @@ const TablaConFiltro = ({ datos }) => {
     setPageIndex(0); // Reseteamos la página a la primera cuando cambia el filtro
   }, [columnFilters]);
 
+  const exportToExcel = () => {
+    // Convierte los datos filtrados a un array de objetos plano (sin celdas de react-table)
+    const dataToExport = filteredRows.map((row) => {
+        const obj = {};
+        row.getVisibleCells().forEach((cell) => {
+        obj[cell.column.id] = cell.getValue();
+        });
+        return obj;
+    });
+
+    const worksheet = utils.json_to_sheet(dataToExport);
+    const workbook = utils.book_new();
+    utils.book_append_sheet(workbook, worksheet, "Datos");
+
+    writeFile(workbook, "tabla_filtrada.xlsx");
+  };
+
   return (
     <div className="tabla-contenedor">
+        <button onClick={exportToExcel} style={{ marginBottom: "10px", backgroundColor: 'green', color: 'white', padding: '10px', borderRadius: '10px'}}>
+            Exportar a Excel
+        </button>  
       <table className="tabla">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (

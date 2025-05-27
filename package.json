@@ -11,8 +11,10 @@
   },
   "dependencies": {
     "@tanstack/react-table": "^8.21.3",
+    "antd": "^5.25.3",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-router-dom": "^7.6.1",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
