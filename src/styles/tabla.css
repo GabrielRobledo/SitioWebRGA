@@ -22,9 +22,11 @@
 
 .tabla th,
 .tabla td {
-  padding: 12px 15px;
+  padding: 8px;
   text-align: left;
   border-bottom: 1px solid #ddd;
+  border: 1px solid #ccc;
+  min-width: 120px;
 }
 
 .tabla tbody tr:hover {
