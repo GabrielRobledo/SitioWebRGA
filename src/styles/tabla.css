@@ -1,106 +1,5 @@
-/* Estilos base para la tabla */
-.tabla-contenedor {
-  width: 100%;
-  overflow-x: auto;
-  padding: 20px;
-  box-sizing: border-box;
-}
-
-.tabla {
-  width: 100%;
-  border-collapse: collapse;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #fff;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-}
-
-/* Estilo por defecto (modo claro) */
-.tabla thead {
-  background-color: #004a99;
-  color: white;
-}
-
-.tabla th,
-.tabla td {
-  padding: 8px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-  border: 1px solid #ccc;
-  min-width: 120px;
-}
-
-.tabla tbody tr:hover {
-  background-color: #f1f1f1;
-}
-
-/* Alternar color de filas */
-.tabla tbody tr:nth-child(even) {
-  background-color: #fafafa;
-}
-
-/* Responsive en pantallas pequeñas */
-@media (max-width: 768px) {
-  .tabla thead {
-    display: none;
-  }
-
-  .tabla, .tabla tbody, .tabla tr, .tabla td {
-    display: block;
-    width: 100%;
-  }
-
-  .tabla tr {
-    margin-bottom: 15px;
-  }
-
-  .tabla td {
-    text-align: right;
-    padding-left: 50%;
-    position: relative;
-  }
-
-  .tabla td::before {
-    content: attr(data-label);
-    position: absolute;
-    left: 15px;
-    width: 45%;
-    padding-right: 10px;
-    white-space: nowrap;
-    text-align: left;
-    font-weight: bold;
-  }
-}
-
-/* Modo oscuro (Dark mode) */
-@media (prefers-color-scheme: dark) {
-  .tabla {
-    background-color: #2c2f36; /* Fondo oscuro */
-    color: #e0e0e0; /* Texto claro */
-  }
-
-  .tabla thead {
-    background-color: #1a202c; /* Fondo más oscuro para el encabezado */
-    color: #e0e0e0; /* Texto claro en el encabezado */
-  }
-
-  .tabla th,
-  .tabla td {
-    border-color: #444; /* Borde suave en gris oscuro */
-  }
-
-  .tabla tbody tr {
-    background-color: #3a3f47; /* Fila con fondo oscuro */
-  }
-
-  .tabla tbody tr:hover {
-    background-color: #4a4f58; /* Fila resaltada con color más claro */
-  }
-
-  .tabla tbody tr:nth-child(even) {
-    background-color: #353a40; /* Alternar color de filas con fondo gris oscuro */
-  }
-
-  .btn {
+/* Botones (modo claro y base) */
+.btn {
   padding: 8px 14px;
   border: none;
   border-radius: 6px;
@@ -167,4 +66,48 @@
   min-width: 200px;
 }
 
+/* Modo oscuro (solo los override del dark mode) */
+@media (prefers-color-scheme: dark) {
+  .tabla {
+    background-color: #2c2f36;
+    color: #e0e0e0;
+  }
+
+  .tabla thead {
+    background-color: #1a202c;
+    color: #e0e0e0;
+  }
+
+  .tabla th,
+  .tabla td {
+    border-color: #444;
+  }
+
+  .tabla tbody tr {
+    background-color: #3a3f47;
+  }
+
+  .tabla tbody tr:hover {
+    background-color: #4a4f58;
+  }
+
+  .tabla tbody tr:nth-child(even) {
+    background-color: #353a40;
+  }
+
+  .dropdown-menu {
+    background-color: #2c2f36;
+    border-color: #444;
+    color: #e0e0e0;
+  }
+
+  .btn-outline {
+    background-color: transparent;
+    border-color: #666;
+    color: #ddd;
+  }
+
+  .btn-outline:hover {
+    background-color: #444;
+  }
 }
