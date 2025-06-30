@@ -53,7 +53,7 @@ const BasicLayout = () => {
 
           {/* Pie de página */}
           <Footer style={{ textAlign: 'center' }}>
-              ©2025 Gabriel Robledo. Todos los derechos reservados.
+              ©2025 Unidad Ejectura Provincial. Todos los derechos reservados.
           </Footer>
         </Layout>     
     </Layout>  
