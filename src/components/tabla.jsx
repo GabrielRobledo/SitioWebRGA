@@ -106,7 +106,7 @@ const TablaConFiltro = ({ datos }) => {
       <div
         className="dropdown-container"
         ref={dropdownRef}
-        style={{ display: "inline-block", marginBottom: "10px" }}
+        style={{ position: "relative", display: "inline-block", marginBottom: "10px" }}
       >
         <button className="btn btn-primary" onClick={toggleDropdown} style={{ marginRight: "10px" }}>
           Mostrar columnas ▼
