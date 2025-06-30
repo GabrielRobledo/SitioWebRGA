@@ -82,7 +82,6 @@ const TablaConFiltro = ({ datos }) => {
     setColumnFilters([]);
   };
 
-  // Dropdown de columnas
   const dropdownRef = useRef(null);
   const [showColumnDropdown, setShowColumnDropdown] = useState(false);
 
@@ -104,40 +103,17 @@ const TablaConFiltro = ({ datos }) => {
 
   return (
     <div className="tabla-contenedor">
-      {/* Dropdown para mostrar/ocultar columnas */}
-      <div style={{ position: "relative", display: "inline-block", marginBottom: "10px" }} ref={dropdownRef}>
-        <button
-          onClick={toggleDropdown}
-          style={{
-            padding: "8px 12px",
-            backgroundColor: "#007bff",
-            color: "white",
-            border: "none",
-            borderRadius: "5px",
-            cursor: "pointer",
-            marginRight: "10px"
-          }}
-        >
+      <div
+        className="dropdown-container"
+        ref={dropdownRef}
+        style={{ display: "inline-block", marginBottom: "10px" }}
+      >
+        <button className="btn btn-primary" onClick={toggleDropdown} style={{ marginRight: "10px" }}>
           Mostrar columnas ▼
         </button>
 
         {showColumnDropdown && (
-          <div
-            style={{
-              position: "absolute",
-              top: "110%",
-              left: 0,
-              backgroundColor: "white",
-              border: "1px solid #ccc",
-              borderRadius: "5px",
-              padding: "10px",
-              boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
-              zIndex: 1000,
-              maxHeight: "300px",
-              overflowY: "auto",
-              minWidth: "200px",
-            }}
-          >
+          <div className="dropdown-menu">
             {table.getAllLeafColumns().map((column) => (
               <div key={column.id} style={{ marginBottom: "5px" }}>
                 <label>
@@ -155,35 +131,14 @@ const TablaConFiltro = ({ datos }) => {
         )}
       </div>
 
-      {/* Botones de acción */}
-      <button
-        onClick={exportToExcel}
-        style={{
-          marginBottom: "10px",
-          backgroundColor: "green",
-          color: "white",
-          padding: "10px",
-          borderRadius: "10px",
-          marginRight: "10px",
-        }}
-      >
+      <button className="btn btn-success" onClick={exportToExcel} style={{ marginRight: "10px" }}>
         Exportar a Excel
       </button>
 
-      <button
-        onClick={clearFilters}
-        style={{
-          marginBottom: "10px",
-          backgroundColor: "orange",
-          color: "white",
-          padding: "10px",
-          borderRadius: "10px",
-        }}
-      >
+      <button className="btn btn-warning" onClick={clearFilters}>
         Limpiar Filtros
       </button>
 
-      {/* Tabla */}
       <table className="tabla">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -195,10 +150,11 @@ const TablaConFiltro = ({ datos }) => {
                     onClick={header.column.getToggleSortingHandler()}
                   >
                     {flexRender(header.column.columnDef.header, header.getContext())}
-                    {{
-                      asc: " 🔼",
-                      desc: " 🔽",
-                    }[header.column.getIsSorted()] ?? ""}
+                    {header.column.getIsSorted() === "asc"
+                      ? " 🔼"
+                      : header.column.getIsSorted() === "desc"
+                      ? " 🔽"
+                      : ""}
                   </div>
                   {header.column.getCanFilter() && (
                     <input
@@ -217,27 +173,22 @@ const TablaConFiltro = ({ datos }) => {
           {paginatedRows.map((row) => (
             <tr key={row.id}>
               {row.getVisibleCells().map((cell) => (
-                <td key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
+                <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
               ))}
             </tr>
           ))}
         </tbody>
       </table>
 
-      {/* Paginación */}
       <div style={{ marginTop: "10px" }}>
-        <button
-          onClick={() => setPageIndex((p) => Math.max(p - 1, 0))}
-          disabled={pageIndex === 0}
-        >
+        <button className="btn btn-outline" onClick={() => setPageIndex((p) => Math.max(p - 1, 0))} disabled={pageIndex === 0}>
           Anterior
         </button>
         <span style={{ margin: "0 10px" }}>
           Página {pageIndex + 1} de {totalPages}
         </span>
         <button
+          className="btn btn-outline"
           onClick={() => setPageIndex((p) => Math.min(p + 1, totalPages - 1))}
           disabled={pageIndex >= totalPages - 1}
         >
