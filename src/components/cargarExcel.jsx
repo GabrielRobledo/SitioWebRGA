@@ -17,33 +17,39 @@ const CargarExcelYMostrarTabla = () => {
     return tempDate.toLocaleDateString(); // Convierte la fecha a una cadena legible
   };
   useEffect(() => {
-    // Ruta al archivo estático en la carpeta 'public'
-    const filePath = '/ConsultaEventosRGA.xlsx'; // Asegúrate de que el archivo esté en la carpeta 'public'
-
-    // Usamos fetch para cargar el archivo Excel
+    const filePath = '/ConsultaEventosRGA.xlsx';
+  
     fetch(filePath)
-      .then((response) => response.arrayBuffer()) // Leemos el archivo como un buffer
+      .then((response) => response.arrayBuffer())
       .then((buffer) => {
         const wb = XLSX.read(buffer, { type: "array" });
-
-        // Suponiendo que la hoja que quieres leer es la primera
         const ws = wb.Sheets[wb.SheetNames[0]];
-
-        // Convertimos la hoja a un array de objetos (como una tabla)
-        let jsonData = XLSX.utils.sheet_to_json(ws);
-
-        // Procesamos los datos para convertir solo las columnas de fechas
-        jsonData = jsonData.map((row) => {
-          Object.keys(row).forEach((key) => {
-            // Si la columna está en la lista de columnasConFechas, la convertimos
+  
+        // Leer como array de arrays
+        const jsonData = XLSX.utils.sheet_to_json(ws, { header: 1 });
+  
+        const [headers, ...rows] = jsonData;
+  
+        // Convertir a array de objetos con orden fijo
+        const data = rows.map((row) => {
+          const obj = {};
+          headers.forEach((header, index) => {
+            obj[header] = row[index];
+          });
+          return obj;
+        });
+  
+        // Convertir fechas
+        const dataConFechas = data.map((row) => {
+          headers.forEach((key) => {
             if (columnasConFechas.includes(key) && typeof row[key] === "number") {
-              row[key] = convertExcelDate(row[key]); // Convertir si es un número
+              row[key] = convertExcelDate(row[key]);
             }
           });
           return row;
         });
-
-        setDatosExcel(jsonData); // Guardamos los datos procesados en el estado
+  
+        setDatosExcel(dataConFechas);
       })
       .catch((error) => {
         console.error("Error al leer el archivo Excel:", error);
