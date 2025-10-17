@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import * as XLSX from "xlsx";
 import TablaConFiltro from "./tabla"; // Asegúrate de tener el componente importado correctamente
 
+
 const CargarExcelYMostrarTabla = () => {
   const [datosExcel, setDatosExcel] = useState([]);
 
@@ -59,10 +60,15 @@ const CargarExcelYMostrarTabla = () => {
   return (
     <div>
       <h2>Listado de Eventos</h2>
-      {/* Pasamos los datos al componente TablaConFiltro */}
-      {datosExcel.length > 0 && <TablaConFiltro datos={datosExcel} />}
+      {datosExcel.length > 0 && (
+        <>
+
+          <TablaConFiltro datos={datosExcel} />
+        </>
+      )}
     </div>
   );
+
 };
 
 export default CargarExcelYMostrarTabla;

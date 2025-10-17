@@ -113,7 +113,7 @@ const TablaConFiltro = ({ datos }) => {
         </button>
 
         {showColumnDropdown && (
-          <div className="dropdown-menu">
+          <div className="column-dropdown">
             {table.getAllLeafColumns().map((column) => (
               <div key={column.id} style={{ marginBottom: "5px" }}>
                 <label>

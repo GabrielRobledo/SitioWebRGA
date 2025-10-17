@@ -125,7 +125,7 @@
 }
 
 /* 📂 Dropdown de columnas */
-.dropdown-menu {
+.column-dropdown {
   position: absolute;
   top: 110%;
   left: 0;
