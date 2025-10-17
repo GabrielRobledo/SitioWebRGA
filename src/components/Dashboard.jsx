@@ -278,8 +278,12 @@ const Dashboard = () => {
                         },
                     },
                     x: {
-                        beginAtZero: true,
+                      beginAtZero: true,
+                      ticks: {
+                        stepSize: 1, // 👈 fuerza la unidad a 1
+                      },
                     },
+
                     },
                 }}
                 />
