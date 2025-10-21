@@ -57,15 +57,25 @@ const Dashboard = () => {
     return `${day}-${month}-${year}`;
     };
 
-      const datosFiltrados = datos.filter((d) => {
-        const cumpleHospital = hospitalSeleccionado
+    const parseFecha = (fechaStr) => {
+      if (!fechaStr || !fechaStr.includes("-")) return null;
+      const [dia, mes, anio] = fechaStr.split("-");
+      return new Date(`${anio}-${mes}-${dia}`);
+    };
+    
+    const datosFiltrados = datos.filter((d) => {
+      const cumpleHospital = hospitalSeleccionado
         ? d["(ING/DEST) Centro de Salud"] === hospitalSeleccionado
         : true;
-        const fechaEvento = d["EVENTO (Fecha)"];
-        const cumpleDesde = fechaDesde ? fechaEvento >= fechaDesde : true;
-        const cumpleHasta = fechaHasta ? fechaEvento <= fechaHasta : true;
-        return cumpleHospital && cumpleDesde && cumpleHasta;
+    
+      const fechaEvento = parseFecha(d["EVENTO (Fecha)"]);
+    
+      const cumpleDesde = fechaDesde ? fechaEvento >= new Date(fechaDesde) : true;
+      const cumpleHasta = fechaHasta ? fechaEvento <= new Date(fechaHasta) : true;
+    
+      return cumpleHospital && cumpleDesde && cumpleHasta;
     });
+
     const datosFiltradosPorBusqueda = datosFiltrados.filter((row) => {
     const texto = busqueda.toLowerCase();
     return (
