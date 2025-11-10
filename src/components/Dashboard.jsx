@@ -189,42 +189,59 @@ const Dashboard = () => {
 
       {/* Filtros */}
     <div className="row mb-4 align-items-end">
-    <div className="col-md-4">
+      <div className="col-md-4">
         <label>Elegí tu hospital:</label>
         <select
-        className="form-select"
-        value={hospitalSeleccionado}
-        onChange={(e) => setHospitalSeleccionado(e.target.value)}
+          className="form-select"
+          value={hospitalSeleccionado}
+          onChange={(e) => setHospitalSeleccionado(e.target.value)}
         >
-        <option value="">-- Seleccionar --</option>
-        {hospitalesUnicos.map((hosp, idx) => (
+          <option value="">-- Seleccionar --</option>
+          {hospitalesUnicos.map((hosp, idx) => (
             <option key={idx} value={hosp}>
-            {hosp}
+              {hosp}
             </option>
-        ))}
+          ))}
         </select>
-    </div>
-
-    <div className="col-md-3">
+      </div>
+    
+      <div className="col-md-3">
         <label>Desde:</label>
         <input
-        type="date"
-        className="form-control"
-        value={fechaDesde}
-        onChange={(e) => setFechaDesde(e.target.value)}
+          type="date"
+          className="form-control"
+          value={fechaDesde}
+          onChange={(e) => setFechaDesde(e.target.value)}
         />
-    </div>
-
-    <div className="col-md-3">
+      </div>
+    
+      <div className="col-md-3">
         <label>Hasta:</label>
         <input
-        type="date"
-        className="form-control"
-        value={fechaHasta}
-        onChange={(e) => setFechaHasta(e.target.value)}
+          type="date"
+          className="form-control"
+          value={fechaHasta}
+          onChange={(e) => setFechaHasta(e.target.value)}
         />
+      </div>
+    
+      {/* 🧹 Botón para limpiar filtros */}
+      <div className="col-md-2 d-flex justify-content-end">
+        <button
+          className="btn btn-outline-secondary w-100"
+          onClick={() => {
+            setHospitalSeleccionado("");
+            setFechaDesde("");
+            setFechaHasta("");
+            setBusqueda("");
+            setPaginaActual(1);
+          }}
+        >
+          🧹 Limpiar filtros
+        </button>
+      </div>
     </div>
-    </div>
+
 
 
       {!hospitalSeleccionado ? (
