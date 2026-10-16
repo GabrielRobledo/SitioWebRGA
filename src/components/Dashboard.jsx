@@ -385,22 +385,29 @@ const Dashboard = () => {
               </tr>
             </thead>
             <tbody>
-              {datosPaginados.map((row, idx) => (
-                <tr key={idx}>
-                  <td>{row["EVENTO (Fecha)"]}</td>
-                  <td>{row["PACIENTE nombre y apellido"]}</td>
-                  <td>
-                    <span
-                      className={`badge bg-${row["ESTADO DENUNCIA (EJ)"] === "Viable" ? "success" : "danger"}`}
-                    >
-                      {row["ESTADO DENUNCIA (EJ)"]}
-                    </span>
-                  </td>
-                  <td>{row["(AT) Lugar/Dirección de Accidente"]}</td>
-                  <td>{row["(ING/DEST) Centro de Salud"]}</td>
-                  <td>{row["Compañia (EJ)"]}</td>
-                </tr>
-              ))}
+              {datosPaginados.map((row, idx) => {
+                // 1. Normalizamos el estado de la fila actual igual que en las tarjetas
+                const estadoCrudo = row["ESTADO DENUNCIA (EJ)"];
+                const estadoNorm = String(estadoCrudo || "").trim().toLowerCase() || "(sin estado)";
+                
+                // 2. Buscamos el color en tu diccionario, por defecto 'secondary'
+                const colorBadge = coloresEstados[estadoNorm] || "secondary";
+          
+                return (
+                  <tr key={idx}>
+                    <td>{row["EVENTO (Fecha)"]}</td>
+                    <td>{row["PACIENTE nombre y apellido"]}</td>
+                    <td>
+                      <span className={`badge bg-${colorBadge}`}>
+                        {estadoCrudo || "(Sin estado)"}
+                      </span>
+                    </td>
+                    <td>{row["(AT) Lugar/Dirección de Accidente"]}</td>
+                    <td>{row["(ING/DEST) Centro de Salud"]}</td>
+                    <td>{row["Compañia (EJ)"]}</td>
+                  </tr>
+                );
+              })}
               {datosPaginados.length === 0 && (
                 <tr>
                   <td colSpan="6" className="text-center text-muted">
