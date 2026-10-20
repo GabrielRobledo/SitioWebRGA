@@ -9,12 +9,67 @@ import {
   flexRender,
 } from "@tanstack/react-table";
 
-const TablaConFiltro = ({ datos }) => {
+const TablaConFiltro = ({ datos: datosProp, sheetUrls = [] }) => {
+  const [datos, setDatos] = useState(datosProp || []);
+  const [loading, setLoading] = useState(!datosProp && sheetUrls.length > 0);
+  const [error, setError] = useState(null);
+
   const [columnFilters, setColumnFilters] = useState([]);
   const [columnVisibility, setColumnVisibility] = useState({});
   const [sorting, setSorting] = useState([]);
   const [pageIndex, setPageIndex] = useState(0);
   const pageSize = 35;
+
+  // Efecto para cargar, combinar ambas hojas y recortar hasta la columna O
+  useEffect(() => {
+    if (datosProp) {
+      setDatos(datosProp);
+      return;
+    }
+
+    if (!sheetUrls || sheetUrls.length === 0) return;
+
+    setLoading(true);
+
+    Promise.all(
+      sheetUrls.map((url) =>
+        fetch(url).then((res) => {
+          if (!res.ok) throw new Error("No se pudo conectar con Google Sheets");
+          return res.text();
+        })
+      )
+    )
+      .then((csvTexts) => {
+        let allCombinedData = [];
+
+        csvTexts.forEach((csvText) => {
+          const workbook = utils.read(csvText, { type: "string" });
+          const sheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[sheetName];
+          const jsonDatos = utils.sheet_to_json(worksheet);
+
+          // Filtrar cada fila para conservar únicamente las columnas hasta la 'O' (primeras 15 columnas)
+          const datosLimitados = jsonDatos.map((row) => {
+            const keys = Object.keys(row);
+            const limitedRow = {};
+            keys.slice(0, 15).forEach((key) => {
+              limitedRow[key] = row[key];
+            });
+            return limitedRow;
+          });
+
+          allCombinedData = [...allCombinedData, ...datosLimitados];
+        });
+
+        setDatos(allCombinedData);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setError("Error al cargar o combinar las hojas de Google Sheets");
+        setLoading(false);
+      });
+  }, [datosProp, sheetUrls]);
 
   const allKeys = useMemo(() => {
     const keysSet = new Set();
@@ -100,6 +155,9 @@ const TablaConFiltro = ({ datos }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  if (loading) return <p>Cargando datos de las hojas...</p>;
+  if (error) return <p style={{ color: "red" }}>{error}</p>;
 
   return (
     <div className="tabla-contenedor">
